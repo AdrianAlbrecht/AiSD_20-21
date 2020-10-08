@@ -73,9 +73,7 @@ def z9( a ):
 # Przygotować funkcję, która przyjmie argument w postaci łańcucha znaków, a następnie zwróci wartość logiczną informującą o tym czy przekazany tekst jest palindromem.
 
 def z10( znaki ):
-    if znaki==znaki[len(znaki)::-1]:
-        return True
-    return False
+    return znaki==znaki[::-1]
 
 
 #print(z1("A","Albrecht"))
