@@ -25,7 +25,8 @@ class LinkedList:
     def append(self, new_value):
         new_obj=Node()
         new_obj.value= new_value
-        self.tail.next=new_obj
+        if(self.tail!=None):
+            self.tail.next=new_obj
         self.tail=new_obj
         if(self.head==None):
             self.head=new_obj
