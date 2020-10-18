@@ -48,9 +48,8 @@ class LinkedList:
     def insert(self, new_value, after):
         new_obj=Node()
         new_obj.value= new_value
-        temp=after.next
+        new_obj.next=after.next
         after.next=new_obj
-        new_obj.next=temp
 
     def pop(self):
         temp=self.head
@@ -67,20 +66,18 @@ class LinkedList:
         return temp.value
 
     def remove(self, after):
-        temp=after.next.next
-        after.next=temp
+        after.next=after.next.next
 
     def __repr__(self):
         return f'{self.head}'
 
     def __len__(self):
-        length=1
+        length=0
         temp=self.head
-        while(temp.next!=None):
-            temp=temp.next
+        while(temp!=None):
             length+=1
+            temp=temp.next
         return length
-
 
 list_ = LinkedList()
 assert list_.head == None
