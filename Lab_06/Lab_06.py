@@ -70,7 +70,7 @@ class BinarySearchTree:
     def remove(self, value: Any):
         self.root= self._remove(self.root, value)
 
-    def _remove(self, node: BinaryNode, value: Any): #TODO
+    def _remove(self, node: BinaryNode, value: Any):
         if node!=None:
             if value == node.value:
                 if((node.left_child==None)&(node.right_child==None)):
