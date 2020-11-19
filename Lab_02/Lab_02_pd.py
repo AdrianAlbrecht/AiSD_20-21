@@ -1,4 +1,5 @@
-import Lab_02
+from Lab_02 import Lab_02
+#import Lab_02 jesli odpalamy sam plik Lab_02_pd.py
 
 class Queue:
     def __init__(self):
