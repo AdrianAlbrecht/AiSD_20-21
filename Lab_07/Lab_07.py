@@ -140,6 +140,7 @@ class GraphPath:
         for x in g.adjacencies.keys():
             self._show(x, dot, visited,g)
         dot.render(f'output/{name}_trasa',view=True, format="png",quiet_view=False)
+        print(f"Koszt trasy: {self.tablica_kosztow[k]}")
 
     def _dijkstra(self,g: Graph, p: Vertex, k: Vertex):
         self.visited.append(p)
