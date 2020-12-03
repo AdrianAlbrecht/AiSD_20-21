@@ -91,19 +91,24 @@ class Graph:
 
     def show(self, name: Optional= "graf"):
         dot = Groph(comment='graf')
-        self._show_helper(self.adjacencies[list(self.adjacencies.keys())[0]][0].source, dot, list())
+        visited=[]
+        for x in self.adjacencies.keys():
+            self._show_helper(x, dot, visited)
         dot.render(f'output/{name}',view=True, format="png",quiet_view=False)
 
     def _show_helper(self, v: Vertex, dot, visited: List):
-        dot.node(str(v.index), str(v.data))
-        visited.append(v)
-        for neighbour in self.adjacencies[v]:
-            desc=""
-            if neighbour.weight != None:
-                desc+=f"{neighbour.weight}"
-            dot.edge(str(neighbour.source.index), str(neighbour.destination.index), label=desc)
-            if not(neighbour.destination in visited):
-                self._show_helper(neighbour.destination, dot, visited)
+        if v in visited:
+            True
+        else:
+            dot.node(str(v.index), str(v.data))
+            visited.append(v)
+            for neighbour in self.adjacencies[v]:
+                desc=""
+                if neighbour.weight != None:
+                    desc+=f"{neighbour.weight}"
+                dot.edge(str(neighbour.source.index), str(neighbour.destination.index), label=desc)
+                if not(neighbour.destination in visited):
+                    self._show_helper(neighbour.destination, dot, visited)
         
     def __repr__(self):
         stirng = ""
@@ -131,7 +136,9 @@ class GraphPath:
             self.tablica_parents[neighbour.destination]=neighbour.source
         self._search_shortest_way(g,p,k)
         dot = Groph(comment='graf')
-        self._show(g.adjacencies[list(g.adjacencies.keys())[0]][0].source, dot, list(),g)
+        visited=[]
+        for x in g.adjacencies.keys():
+            self._show(x, dot, visited,g)
         dot.render(f'output/{name}_trasa',view=True, format="png",quiet_view=False)
 
     def _dijkstra(self,g: Graph, p: Vertex, k: Vertex):
@@ -182,22 +189,25 @@ class GraphPath:
         print(self.path)
 
     def _show(self, v: Vertex, dot, visited: List, g: Graph):
-        dot.node(str(v.index), str(v.data))
-        visited.append(v)
-        for neighbour in g.adjacencies[v]:
-            desc=""
-            if neighbour.weight != None:
-                desc+=f"{neighbour.weight}"
-            trasa = False
-            for x in range(1,len(self.path)):
-                if((self.path[x-1]==neighbour.source)&(self.path[x]==neighbour.destination)):
-                    trasa= True
-            if trasa:
-                dot.edge(str(neighbour.source.index), str(neighbour.destination.index), label=desc, color="green")
-            else:
-                dot.edge(str(neighbour.source.index), str(neighbour.destination.index), label=desc)
-            if not(neighbour.destination in visited):
-                self._show(neighbour.destination, dot, visited,g)
+        if v in visited:
+            True
+        else:
+            dot.node(str(v.index), str(v.data))
+            visited.append(v)
+            for neighbour in g.adjacencies[v]:
+                desc=""
+                if neighbour.weight != None:
+                    desc+=f"{neighbour.weight}"
+                trasa = False
+                for x in range(1,len(self.path)):
+                    if((self.path[x-1]==neighbour.source)&(self.path[x]==neighbour.destination)):
+                        trasa= True
+                if trasa:
+                    dot.edge(str(neighbour.source.index), str(neighbour.destination.index), label=desc, color="green")
+                else:
+                    dot.edge(str(neighbour.source.index), str(neighbour.destination.index), label=desc)
+                if not(neighbour.destination in visited):
+                    self._show(neighbour.destination, dot, visited,g)
         
 def name_of_global_obj(xx):
     for objname, oid in globals().items():
@@ -205,47 +215,23 @@ def name_of_global_obj(xx):
             return objname
 
 grafik = Graph()
-grafik.create_vertex("A")
-grafik.create_vertex("B")
-grafik.create_vertex("C")
-grafik.create_vertex("D")
-grafik.create_vertex("E")
-grafik.create_vertex("F")
-lista=grafik.adjacencies.keys()
-lista_kluczy=[x for x in lista]
-grafik.add(EdgeType(1),lista_kluczy[0],lista_kluczy[1],2.5)
-grafik.add(EdgeType(1),lista_kluczy[0],lista_kluczy[5],2.3)
-grafik.add(EdgeType(1),lista_kluczy[5],lista_kluczy[1],4.2)
-grafik.add(EdgeType(1),lista_kluczy[5],lista_kluczy[2],6.2)
-grafik.add(EdgeType(1),lista_kluczy[2],lista_kluczy[1],5.1)
-grafik.add(EdgeType(1),lista_kluczy[2],lista_kluczy[3],8.4)
-grafik.add(EdgeType(1),lista_kluczy[3],lista_kluczy[4],2.5)
-grafik.add(EdgeType(1),lista_kluczy[4],lista_kluczy[1],6.2) #EdgeType(2)
-grafik.add(EdgeType(1),lista_kluczy[4],lista_kluczy[5],6.1)
-grafik.traverse_breadth_first(print)
-print()
-grafik.traverse_depth_first(print)
-print(grafik)
+grafik.create_vertex(0)
+grafik.create_vertex(1)
+grafik.create_vertex(2)
+grafik.create_vertex(3)
+grafik.create_vertex(4)
+grafik.create_vertex(5)
+grafik.create_vertex(6)
+lista_kluczy=[x for x in grafik.adjacencies.keys()]
+grafik.add(EdgeType(1),lista_kluczy[1],lista_kluczy[2],9)
+grafik.add(EdgeType(1),lista_kluczy[1],lista_kluczy[5],11)
+grafik.add(EdgeType(1),lista_kluczy[2],lista_kluczy[4],12)
+grafik.add(EdgeType(1),lista_kluczy[4],lista_kluczy[5],11)
+grafik.add(EdgeType(1),lista_kluczy[4],lista_kluczy[6],6)
+grafik.add(EdgeType(1),lista_kluczy[5],lista_kluczy[6],8)
+grafik.add(EdgeType(1),lista_kluczy[0],lista_kluczy[4],12)
+grafik.add(EdgeType(1),lista_kluczy[0],lista_kluczy[2],5)
+grafik.add(EdgeType(1),lista_kluczy[3],lista_kluczy[4],5)
+grafik.add(EdgeType(1),lista_kluczy[3],lista_kluczy[5],13)
 grafik.show(name=name_of_global_obj(grafik))
-gp=GraphPath(grafik,lista_kluczy[0],lista_kluczy[4], name=name_of_global_obj(grafik))
-
-grafik = Graph()
-grafik.create_vertex("A")
-grafik.create_vertex("B")
-grafik.create_vertex("C")
-grafik.create_vertex("D")
-grafik.create_vertex("E")
-grafik.create_vertex("F")
-lista=grafik.adjacencies.keys()
-lista_kluczy=[x for x in lista]
-grafik.add(EdgeType(1),lista_kluczy[0],lista_kluczy[1])
-grafik.add(EdgeType(1),lista_kluczy[0],lista_kluczy[5])
-grafik.add(EdgeType(1),lista_kluczy[5],lista_kluczy[1])
-grafik.add(EdgeType(1),lista_kluczy[5],lista_kluczy[2])
-grafik.add(EdgeType(1),lista_kluczy[2],lista_kluczy[1])
-grafik.add(EdgeType(1),lista_kluczy[2],lista_kluczy[3])
-grafik.add(EdgeType(1),lista_kluczy[3],lista_kluczy[4])
-grafik.add(EdgeType(2),lista_kluczy[4],lista_kluczy[1]) #EdgeType(2)
-grafik.add(EdgeType(1),lista_kluczy[4],lista_kluczy[5])
-grafik.show()
-gp=GraphPath(grafik,lista_kluczy[0],lista_kluczy[4])
+gp=GraphPath(grafik,lista_kluczy[1],lista_kluczy[4])
